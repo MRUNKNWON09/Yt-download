@@ -1,36 +1,29 @@
 import express from "express";
-import { getInfo, chooseFormat } from "@distube/ytdl-core";
+import ytdl from "@distube/ytdl-core";
+
+const { getInfo, chooseFormat } = ytdl;
 
 const app = express();
-
-app.get("/", (req, res) => {
-  res.send("✅ YouTube Download API is running!");
-});
+const PORT = process.env.PORT || 3000;
 
 app.get("/yt/download", async (req, res) => {
   const videoURL = req.query.url;
-  if (!videoURL) {
-    return res.status(400).json({ error: "❌ Please provide ?url=YouTube_Link" });
-  }
+  if (!videoURL) return res.status(400).json({ error: "No URL provided" });
 
   try {
     const info = await getInfo(videoURL);
     const format = chooseFormat(info.formats, { quality: "highest" });
 
-    res.json({
+    return res.json({
       title: info.videoDetails.title,
-      duration: info.videoDetails.lengthSeconds,
-      download_url: format.url,
-      quality: format.qualityLabel,
-      type: format.container
+      download: format.url,
+      lengthSeconds: info.videoDetails.lengthSeconds
     });
-  } catch (error) {
-    res.status(500).json({
-      error: "Failed to process video",
-      details: error.message
-    });
+  } catch (err) {
+    return res.status(500).json({ error: "Failed to process video", details: err.message });
   }
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
