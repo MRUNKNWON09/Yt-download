@@ -1,7 +1,7 @@
 {
   "name": "yt-download-api",
   "version": "1.0.0",
-  "description": "YouTube Video Download API",
+  "description": "YouTube Video Download API for Render",
   "type": "module",
   "main": "index.js",
   "scripts": {
