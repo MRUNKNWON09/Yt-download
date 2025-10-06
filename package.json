@@ -1,0 +1,14 @@
+{
+  "name": "yt-download-api",
+  "version": "1.0.0",
+  "description": "YouTube Video Download API",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "@distube/ytdl-core": "^4.13.3"
+  }
+}
